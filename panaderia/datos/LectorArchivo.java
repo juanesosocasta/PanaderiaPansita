@@ -11,18 +11,18 @@ import java.util.List;
 
 import java.awt.Component;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
-public class LectorArchivo {
+public class LectorArchivo implements IFuenteDatos  {
     //declaracion de variables necesarias
     String[] datos;
-    private static String nombreArchivoProductos = "../cargaArchivos/Productos.txt";
-    private static String nombreArchivoTiendas = "D:/informacion universidad/ingenieria de Software 1/codigos/tarea1parejas/panaderia/cargaArchivos/Tiendas.txt";
-   /*
+    /*
     * metodo encargado de leer los archivos y devolver un array de strings
     *se le ingresa el nombre del archivo por medio del explorador de archivos y de esta forma 
     *se logra pasar los 2 archivos
+    *@version 1.0
     */
-    public String[] lectorArchivo(String nombreArchivo) throws IOException{
+    public String[] lectorArchivo(String nombreArchivo) throws IOException {
         Path rutaArchivo = Paths.get(nombreArchivo);
         BufferedReader lector = Files.newBufferedReader(rutaArchivo);
         String linea;
@@ -40,16 +40,20 @@ public class LectorArchivo {
              * 
                
              */
+    @Override
     public List<String[]>  obtenerDatosBase() {
+        JOptionPane.showMessageDialog(null, "ingresa el archivo de Tiendas");
             String nombreArchivo = escogerArchivo();
             LectorArchivo lectura = new LectorArchivo();
             List<String[]> datoTiendaProducto = new ArrayList<>();
             try {
                 if (nombreArchivo!= null) {
-                    String[] direccion=nombreArchivo.split("/");
                     String[]tiendas=lectura.lectorArchivo(nombreArchivo);
                     datoTiendaProducto.add(tiendas);
+
+                    JOptionPane.showMessageDialog(null, "ingresa el archivo de productos");
                     nombreArchivo = escogerArchivo();
+                    
                     String[]productos=lectura.lectorArchivo(nombreArchivo);
                     datoTiendaProducto.add(productos);
                     return datoTiendaProducto;
@@ -93,15 +97,6 @@ public class LectorArchivo {
      
         
  }
-     
-       /*  public void leerDatos(String nombreArchivo) throws IOException {
-            
-        }
-    }
-
-    
-   /*  */
-
     
 
 

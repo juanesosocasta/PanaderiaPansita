@@ -1,5 +1,5 @@
 package panaderia.vista;
-
+//profe no funciona
 public class Principal {
 
 	public static void main(String[] args) {

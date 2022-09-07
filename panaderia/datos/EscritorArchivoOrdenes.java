@@ -29,6 +29,7 @@ public class EscritorArchivoOrdenes {
 
 		try {
 			BufferedWriter escritor = Files.newBufferedWriter(rutaArchivo, APPEND);
+			//BufferedWriter escritor = Files.newBufferedWriter(rutaArchivo, CREATE, APPEND);
 			escritor.write(orden.toString());
 			escritor.close();
 		} catch (IOException ex) {

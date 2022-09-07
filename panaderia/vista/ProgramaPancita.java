@@ -1,9 +1,7 @@
 package panaderia.vista;
-
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
-
-import panaderia.entidades.base.Recorrido;
 import panaderia.logica.ControlRecorrido;
 
 
@@ -40,7 +38,12 @@ public class ProgramaPancita {
 			System.out.println("¿Desea crear orden de pedido (S/N)?");
 			respuesta = consola.next();
 			if (respuesta.equals("S")) {
-				this.procesarUnaOrden();
+				try {
+					this.procesarUnaOrden();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					System.out.println("no se pudo generar la orden");
+				}
 			}
 		}
 		System.out.println("Fin del programa. Muchas gracias.");
@@ -77,11 +80,12 @@ public class ProgramaPancita {
 	 * Coordina el proceso para poder crear una orden
 	 * de pedido, mostrarla y pedir la aceptación
 	 * del usuario.
+	 * @throws IOException
 	 */
-	private void procesarUnaOrden() {
-		// COMPLETAR:
+	private void procesarUnaOrden() throws IOException {
 		String codigoTienda="";
 		String ruta="";
+		Scanner consola = new Scanner(System.in);
 		pedirCodigo(codigoTienda);
 		boolean existe=control.existeTienda(codigoTienda);// PRIMERO PEDIR EL CÓDIGO DE LA TIENDA
 		// Y VERIFICAR SI EXISTE. ya está hecho
@@ -92,8 +96,32 @@ public class ProgramaPancita {
 			control.crearOrden(ruta,codigoTienda);
 // Y SOLICITAR AL CONTROL CREAR LA ORDEN.
 		 }
-		
-		
+		 String rutaProductos = consola.next();
+			control.crearOrden(rutaProductos, codigoTienda);
+
+		 // Y LOS DETALLES ORDENADOS, PARA MOSTRAR AL USUARIO.
+		 String tiendaD = control.obtenerDatosTienda(codigoTienda);
+		 List<String> detallesO = control.obtenerDetallesOrdenados();
+//
+		/*  for (String i : tiendaD) {
+			 System.out.println(i);
+		 } */
+		 for (String j : detallesO) {
+			 System.out.println(j);
+		 }
+		 // PREGUNTAR SI DESEA ACEPTAR. SI ACEPTA:
+		 // INFORMAR AL CONTROL PARA QUE GUARDE LA ORDEN.
+		 System.out.println("Accepta la orden? S/N: ");
+		 String deseaAcceptar = consola.next();
+		 while (deseaAcceptar.equals("S")) {
+			 if (deseaAcceptar.equals("S")) {
+				 control.guardarOrden();
+			 }
+		 }
+		 System.out.println("Fin del programa. Muchas gracias.");
+		 consola.close();
+	 }
+ }
 		
 		
 		// LUEGO: PEDIR AL CONTROL LOS DATOS DE LA TIENDA
@@ -101,5 +129,3 @@ public class ProgramaPancita {
 		
 		// PREGUNTAR SI DESEA ACEPTAR. SI ACEPTA:
 		// INFORMAR AL CONTROL PARA QUE GUARDE LA ORDEN.
-	}
-}

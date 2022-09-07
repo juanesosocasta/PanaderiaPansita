@@ -1,12 +1,15 @@
 package panaderia.logica;
 
+import java.io.IOException;
 import java.util.List;
 
 import panaderia.datos.EscritorArchivoOrdenes;
+import panaderia.datos.IFuenteDatos;
+import panaderia.datos.LectorArchivo;
+import panaderia.entidades.base.Producto;
 import panaderia.entidades.base.Recorrido;
-import panaderia.entidades.base.Tienda;
 import panaderia.entidades.pedido.OrdenPedido;
-
+import panaderia.entidades.base.Tienda;
 
 /**
  * Lógica del programa de un recorrido de un vendedor,
@@ -28,39 +31,53 @@ public class ControlRecorrido {
 		cargador.cargarDatosIniciales();
 	}
 
+	// Verifica que existe una tienda
 	public boolean existeTienda(String codigoTienda) {
-		/*
-		 * se compara el codigo de la tienda para saber si existe o no.
-		 */
-		 Tienda tienda=recorrido.buscarTienda(codigoTienda);
-		
-		if (tienda!=null) {
+		Tienda tienda = recorrido.buscarTienda(codigoTienda);
+		if (tienda != null) {
 			return true;
-
-		} else {
+		} else
 			return false;
+	}
+	/*
+	 * metodo encargado de crear ordenes para las tiendas respectivas
+	 */
+	public void crearOrden(String nombreArchivoProductos, String codigoTienda) throws IOException{
+		IFuenteDatos archivoProductos = new LectorArchivo();
+		List<String[]> datosBaseProductos=archivoProductos.obtenerDatosBase();
+		datosBaseProductos = archivoProductos.obtenerDatosBase();
+		System.out.println();
+		Tienda tienda = recorrido.buscarTienda(codigoTienda);
+		ordenEnProceso = new OrdenPedido(tienda);
+		for(String[] i : datosBaseProductos) {
+			System.out.println(datosBaseProductos);
+			crearDetalle(ordenEnProceso, i);
 		}
-	}
-	public void crearOrden(String nombreArchivosProductos,String codigoTienda){
-
-		/*
-		 * 
-		 */
-
-	}
-	private void crearDetalle(OrdenPedido orden,String[] datosBaseDetalle) {
 		
 	}
+	/*
+	 * metodo encargado de profundizar la informacion de un pedido analizando los productos
+	 */
+	private void crearDetalle(OrdenPedido orden, String[] datosBaseDetalle){
+		Producto producto = this.recorrido.buscarProducto(datosBaseDetalle[0]);
+		
+		this.ordenEnProceso.addDetalle(producto, producto.hashCode());
+	}
+	/*
+	 * metodo encargado de recuperar datos de las tiendas que se tienen.
+	 */
 	public String obtenerDatosTienda(String codigoTienda) {
-
-		return codigoTienda;
-		
+		Tienda tienda = recorrido.buscarTienda(codigoTienda);
+		String tiendita=tienda.toString();
+		System.out.println(tienda);
+		return tiendita;
 	}
-
+	/*
+	 * metodo encargado de obtener los productos ordenandolos de manera alfabetica
+	 */
 	public List<String> obtenerDetallesOrdenados() {
-
-		return 0;
-		
+		Producto ordenados = recorrido.buscarProducto(null);
+		return this.ordenEnProceso.getDetallesOrdenados();
 	}
 
 	/**

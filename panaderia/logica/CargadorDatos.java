@@ -42,8 +42,7 @@ public class CargadorDatos {
 		// PRIMERO HACERLO CON LA CLASE DE PRUEBA,
 		// Y LUEGO CON LA QUE LEE DE UN ARCHIVO.
 		IFuenteDatos fuenteDatosProductos = new DatosPruebaProductos(); // CAMBIAR POR EL OBJETO CORRESPONDIENTE
-		List<String[]> datosBaseProductos = 
-				fuenteDatosProductos.obtenerDatosBase();
+		List<String[]> datosBaseProductos = fuenteDatosProductos.obtenerDatosBase();
 		this.cargarDatosProductos(datosBaseProductos);
 	}
 	
